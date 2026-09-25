@@ -1,5 +1,5 @@
 """Build the E&N logo files: the traced mark plus lockups with 'service company'
-set in Figtree and converted to outlines, so no SVG depends on an installed font."""
+set in Red Hat Display (the closest match to the logo's own letters) and converted to outlines, so no SVG depends on an installed font."""
 import json, os
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
@@ -19,7 +19,7 @@ X_TOP, BASE = 208 - LY0, 429.5 - LY0      # e/n x-height top and baseline, in le
 _fonts = {}
 def font(w):
     if w not in _fonts:
-        _fonts[w] = instancer.instantiateVariableFont(TTFont('Figtree.ttf'), {'wght': w})
+        _fonts[w] = instancer.instantiateVariableFont(TTFont('RedHatDisplay.ttf'), {'wght': w})
     return _fonts[w]
 
 def text(s, size, x, y, weight=600, track=0.0):
@@ -59,8 +59,8 @@ made['en-wordmark-white.svg'] = svg('en-wordmark-white.svg', LW, LH, word('#fff'
 size = 250; xh = size * .5
 gap = 78
 top = PH / 2 - (xh + size) / 2 + 10
-d1, w1 = text('service', size, PW + gap, top + xh, 650)
-d2, w2 = text('company', size, PW + gap, top + xh + size, 650)
+d1, w1 = text('service', size, PW + gap, top + xh, 900)
+d2, w2 = text('company', size, PW + gap, top + xh + size, 900)
 W = PW + gap + max(w1, w2) + 8
 made['en-lockup-horizontal.svg'] = svg('en-lockup-horizontal.svg', W, PH,
     mark() + f'<path d="{d1}{d2}"/>', 'E&N Service Company')
@@ -68,18 +68,18 @@ made['en-lockup-horizontal-white.svg'] = svg('en-lockup-horizontal-white.svg', W
     mark('#fff', '#000') + f'<path fill="#fff" d="{d1}{d2}"/>', 'E&N Service Company')
 
 # 6. stacked: mark over one line, the line as wide as the mark
-_, w = text('service company', 100, 0, 0, 650)
+_, w = text('service company', 100, 0, 0, 900)
 size = 100 * PW * .92 / w
-d, w = text('service company', size, (PW - PW * .92) / 2, PH + 70 + size * .5, 650)
+d, w = text('service company', size, (PW - PW * .92) / 2, PH + 70 + size * .5, 900)
 H = PH + 70 + size * .5 + size * .25
 made['en-lockup-stacked.svg'] = svg('en-lockup-stacked.svg', PW, H, mark() + f'<path d="{d}"/>', 'E&N Service Company')
 
 # 7. badge: SERVICE COMPANY inside the pebble, under smaller letters
 s = .86
 lx = (PW - LW * s) / 2; ly = 96
-cap = 44; size = cap / .7
-_, w = text('SERVICE COMPANY', size, 0, 0, 700, .16)
-d, w = text('SERVICE COMPANY', size, (PW - w) / 2, ly + LH * s + 58 + cap, 700, .16)
+cap = 38; size = cap / .7
+_, w = text('SERVICE COMPANY', size, 0, 0, 800, .13)
+d, w = text('SERVICE COMPANY', size, (PW - w) / 2, ly + LH * s + 58 + cap, 800, .13)
 badge = (f'<path fill="#000" d="{PEB}"/>'
          f'<path fill="#fff" transform="translate({lx:.2f} {ly}) scale({s}) translate({-LX0} {-LY0})" d="{LET}"/>'
          f'<path fill="#fff" d="{d}"/>')
@@ -88,15 +88,15 @@ made['en-badge.svg'] = svg('en-badge.svg', PW, PH, badge, 'E&N Service Company')
 # 8. one line: e&n service company, text on the letters' baseline
 xh_t = (BASE - X_TOP) * .62
 size = xh_t / .5
-d, w = text('service company', size, LW + 70, BASE, 500)
+d, w = text('service company', size, LW + 70, BASE, 900)
 made['en-wordmark-line.svg'] = svg('en-wordmark-line.svg', LW + 70 + w + 6, LH + size * .25,
     word('#000') + f'<path d="{d}"/>', 'E&N Service Company')
 
 # 9. letters over tracked caps, same width
-_, w = text('SERVICE COMPANY', 100, 0, 0, 600, .22)
+_, w = text('SERVICE COMPANY', 100, 0, 0, 800, .22)
 size = 100 * LW / w
 cap = size * .7
-d, w = text('SERVICE COMPANY', size, 0, LH + 64 + cap, 600, .22)
+d, w = text('SERVICE COMPANY', size, 0, LH + 64 + cap, 800, .22)
 made['en-wordmark-stacked.svg'] = svg('en-wordmark-stacked.svg', LW, LH + 64 + cap + 4,
     word('#000') + f'<path d="{d}"/>', 'E&N Service Company')
 

@@ -135,11 +135,11 @@ color_tiles = ''.join(f'''<figure class="tile"><div class="art"><svg viewBox="0 
 html = f'''<title>E&amp;N Logo Mockups</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&display=swap">
 <style>
 :root {{
   --ground: #f3f3f1; --panel: #ffffff; --ink: #121212; --ink-2: #62625e; --line: #deded9;
-  --font: "Figtree", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font: "Red Hat Display", "Segoe UI", Helvetica, Arial, sans-serif;
 }}
 @media (prefers-color-scheme: dark) {{
   :root:not([data-theme="light"]) {{ color-scheme: dark; --ground: #141414; --panel: #1d1d1c; --ink: #f1f1ee; --ink-2: #a3a39e; --line: #30302e; }}
@@ -207,7 +207,7 @@ figcaption span {{ color: var(--ink-2); font-variant-numeric: tabular-nums; }}
   <h2>In color &mdash; just ideas</h2>
   <div class="grid">{color_tiles}</div>
 
-  <p class="note">&ldquo;service company&rdquo; is set in Figtree and converted to shapes, so every file works without the font installed. All ten SVG files are in the <a href="https://github.com/lman80/en-service-website/tree/main/brand">brand folder on GitHub</a>.</p>
+  <p class="note">&ldquo;service company&rdquo; is set in Red Hat Display Black &mdash; the closest match to the logo&rsquo;s own letters &mdash; and converted to shapes, so every file works without the font installed. All ten SVG files are in the <a href="https://github.com/lman80/en-service-website/tree/main/brand">brand folder on GitHub</a>.</p>
 </div>
 '''
 open('mockups.html', 'w').write(html)
