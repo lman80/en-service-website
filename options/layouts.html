@@ -1,0 +1,319 @@
+<title>E&amp;N Layout Options</title>
+<style>
+/* Layout round only: every option shares one plain font, black/white/gray,
+   and hatched boxes where photos go, so the structure is the only difference. */
+:root {
+  color-scheme: light;
+  --bg: #ffffff; --ink: #111111; --ink-2: #666666; --line: #dddddd; --soft: #f2f2f2; --dark: #1a1a1a; --on-dark: #f5f5f5;
+  --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--font); }
+a { color: inherit; }
+h1, h2, h3, p, ol, ul { margin: 0; }
+
+/* chooser bar */
+.chooser { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: #111; color: #fff; padding-inline: 16px; }
+.chooser-in { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-block: 10px; }
+.chooser strong { font-size: 14px; margin-right: 8px; }
+.chooser button { font: 600 14px/1 var(--font); color: #fff; background: transparent; border: 1px solid #555; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+.chooser button b { margin-right: 6px; }
+.chooser button[aria-selected="true"] { background: #fff; color: #111; border-color: #fff; }
+.chooser button:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 2px; }
+.about-layout { background: #fffbd6; border-bottom: 1px solid #e8e2a8; padding: 10px 16px; font-size: 15px; }
+.about-layout div { max-width: 1200px; margin: 0 auto; }
+
+/* shared bits */
+.ph { background: repeating-linear-gradient(135deg, #e9e9e9 0 10px, #f3f3f3 10px 20px); border: 1px solid #dcdcdc;
+      display: grid; place-items: center; color: #8a8a8a; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; min-height: 120px; }
+.btn { display: inline-block; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; padding: 14px 24px; border-radius: 4px; }
+.logo { font-weight: 800; font-size: 20px; letter-spacing: -.02em; text-decoration: none; }
+.menu { display: flex; gap: 24px; font-size: 15px; }
+.menu a { text-decoration: none; color: var(--ink-2); }
+.contact-lines a { text-decoration: none; font-weight: 600; }
+.foot { color: var(--ink-2); font-size: 13px; }
+.layout[hidden] { display: none !important; }
+
+/* ================================================= A — Split */
+.la .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 24px; }
+.la header .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 22px; }
+.la .hero .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding-block: 48px 88px; }
+.la h1 { font-size: 56px; line-height: 1.05; letter-spacing: -.025em; }
+.la .hero p { font-size: 21px; color: var(--ink-2); margin: 20px 0 32px; max-width: 30ch; }
+.la .hero .ph { aspect-ratio: 4 / 3; }
+.la .row .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding-block: 64px; }
+.la .row .ph { aspect-ratio: 3 / 2; }
+.la h2 { font-size: 36px; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 12px; }
+.la .row p { font-size: 19px; color: var(--ink-2); }
+.la .steps { background: var(--soft); }
+.la .steps .wrap { padding-block: 72px; }
+.la .steps ol { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; counter-reset: s; }
+.la .steps li { counter-increment: s; background: var(--bg); padding: 28px; border-radius: 6px; font-size: 22px; font-weight: 600; }
+.la .steps li::before { content: counter(s); display: block; font-size: 14px; color: var(--ink-2); margin-bottom: 36px; }
+.la .promise .wrap { padding-block: 96px; text-align: center; }
+.la .promise p { font-size: 64px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.la .aboutus .wrap { padding-block: 0 96px; }
+.la .aboutus p { font-size: 22px; max-width: 42ch; margin: 0 auto; text-align: center; color: var(--ink-2); }
+.la .contact { background: var(--dark); color: var(--on-dark); }
+.la .contact .wrap { padding-block: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
+.la .contact h2 { font-size: 48px; }
+.la .contact p { color: #bdbdbd; font-size: 19px; }
+.la .contact-lines { display: grid; gap: 8px; font-size: 26px; justify-items: end; }
+.la footer .wrap { padding-block: 24px; }
+
+/* ================================================= B — Letter */
+.lb { padding-inline: 20px; }
+.lb .col { max-width: 660px; margin: 0 auto; }
+.lb header { display: flex; justify-content: space-between; align-items: baseline; padding-block: 28px 0; flex-wrap: wrap; gap: 12px; }
+.lb .menu { gap: 18px; }
+.lb .hero { padding-block: 120px 56px; }
+.lb h1 { font-size: 52px; line-height: 1.08; letter-spacing: -.025em; }
+.lb .hero p { font-size: 22px; color: var(--ink-2); margin: 20px 0 32px; }
+.lb .strip { max-width: 1100px; margin: 0 auto; }
+.lb .strip .ph { aspect-ratio: 21 / 8; }
+.lb section.s { display: grid; grid-template-columns: 150px 1fr; gap: 24px; padding-block: 40px; border-top: 1px solid var(--line); }
+.lb section.s:first-of-type { margin-top: 72px; }
+.lb .label { font-size: 13px; color: var(--ink-2); padding-top: 6px; }
+.lb h2 { font-size: 26px; line-height: 1.2; letter-spacing: -.01em; }
+.lb section.s p { color: var(--ink-2); margin-top: 6px; font-size: 18px; }
+.lb .steps { padding-left: 1.2em; font-size: 22px; font-weight: 600; display: grid; gap: 6px; }
+.lb section.s p.promise { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; }
+.lb .contact-lines { display: grid; gap: 4px; font-size: 24px; margin-top: 14px; }
+.lb footer { padding-block: 56px 40px; }
+
+/* ================================================= C — Bands */
+.lc .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 24px; }
+.lc header { position: relative; z-index: 2; }
+.lc header .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
+.lc .hero { position: relative; min-height: 620px; display: flex; align-items: flex-end; margin-top: -68px; }
+.lc .hero .ph { position: absolute; inset: 0; min-height: 0; }
+.lc .hero .wrap { position: relative; width: 100%; padding-block: 0 64px; }
+.lc .hero-card { background: var(--bg); padding: 36px 40px; max-width: 640px; }
+.lc h1 { font-size: 60px; line-height: 1.02; letter-spacing: -.03em; }
+.lc .hero p { font-size: 20px; color: var(--ink-2); margin: 16px 0 26px; }
+.lc .band .wrap { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; padding-block: 88px; align-items: start; }
+.lc .band + .band { border-top: 1px solid var(--line); }
+.lc .band.shade { background: var(--soft); border-top: 0; }
+.lc .band h2 { font-size: 64px; line-height: .98; letter-spacing: -.035em; font-weight: 800; }
+.lc .band p { font-size: 21px; color: var(--ink-2); }
+.lc .band .ph { aspect-ratio: 16 / 9; margin-top: 24px; }
+.lc .steps { list-style: none; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.lc .steps li { counter-increment: s; display: grid; grid-template-columns: 90px 1fr; align-items: baseline; font-size: 30px; font-weight: 700;
+                padding-block: 18px; border-bottom: 1px solid var(--line); letter-spacing: -.015em; }
+.lc .steps li::before { content: counter(s); font-size: 64px; font-weight: 800; line-height: 1; }
+.lc .promise { background: var(--dark); color: var(--on-dark); }
+.lc .promise .wrap { padding-block: 88px; }
+.lc .promise p { font-size: clamp(56px, 11vw, 150px); font-weight: 800; line-height: .92; letter-spacing: -.045em; }
+.lc .contact .wrap { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; padding-block: 88px; }
+.lc .contact h2 { font-size: 64px; font-weight: 800; letter-spacing: -.035em; line-height: 1; }
+.lc .contact-lines { display: grid; gap: 6px; font-size: 32px; margin-top: 18px; }
+.lc footer .wrap { padding-block: 24px; border-top: 1px solid var(--line); }
+
+/* ================================================= D — Sidebar */
+.ld { display: grid; grid-template-columns: minmax(300px, 34%) 1fr; }
+.ld aside { position: sticky; top: 52px; height: calc(100vh - 52px); padding: 32px 36px; display: flex; flex-direction: column; gap: 28px; border-right: 1px solid var(--line); overflow: auto; }
+.ld .menu { flex-direction: column; gap: 6px; }
+.ld h1 { font-size: 40px; line-height: 1.08; letter-spacing: -.02em; margin-top: auto; }
+.ld aside p { color: var(--ink-2); font-size: 18px; }
+.ld .btn { align-self: flex-start; }
+.ld .side-contact { font-size: 14px; color: var(--ink-2); display: grid; gap: 2px; }
+.ld .side-contact a { color: var(--ink); text-decoration: none; }
+.ld main { padding: 32px; display: grid; gap: 32px; }
+.ld .big .ph { aspect-ratio: 16 / 10; }
+.ld .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.ld .block { background: var(--soft); padding: 36px; border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
+.ld .block .ph { aspect-ratio: 4 / 3; margin-top: 12px; }
+.ld .block h2 { font-size: 30px; line-height: 1.1; letter-spacing: -.02em; }
+.ld .block p { color: var(--ink-2); font-size: 18px; }
+.ld .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+.ld .steps li { counter-increment: s; font-size: 22px; font-weight: 600; border-top: 2px solid var(--ink); padding-top: 12px; }
+.ld .steps li::before { content: counter(s) "  "; color: var(--ink-2); white-space: pre; }
+.ld .promise { font-size: 56px; font-weight: 800; letter-spacing: -.03em; line-height: 1; padding-block: 24px; }
+.ld .contact { background: var(--dark); color: var(--on-dark); padding: 40px; border-radius: 4px; }
+.ld .contact h2 { font-size: 36px; }
+.ld .contact p { color: #bdbdbd; }
+.ld .contact-lines { display: grid; gap: 4px; font-size: 24px; margin-top: 16px; }
+
+/* ================================================= E — The list */
+.le .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+.le header .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 22px; border-bottom: 2px solid var(--ink); }
+.le .hero .wrap { display: grid; grid-template-columns: 6fr 5fr; gap: 56px; padding-block: 64px 80px; align-items: center; }
+.le h1 { font-size: 58px; line-height: 1.03; letter-spacing: -.03em; }
+.le .hero p { font-size: 20px; color: var(--ink-2); margin: 18px 0 28px; }
+.le .sheet { border: 2px solid var(--ink); background: var(--bg); box-shadow: 8px 8px 0 var(--ink); }
+.le .sheet-head { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 2px solid var(--ink); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.le .sheet ol { list-style: none; padding: 0; }
+.le .sheet li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 16px; }
+.le .sheet li:last-child { border-bottom: 0; }
+.le .sheet li span:first-child, .le .sheet li span:last-child { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.le .sheet li .ok { color: var(--ink); font-weight: 700; }
+.le .sheet-foot { padding: 10px 16px; font-size: 12px; color: var(--ink-2); border-top: 2px solid var(--ink); }
+.le .lines { border-top: 2px solid var(--ink); }
+.le .line { display: grid; grid-template-columns: 70px 220px 1fr; gap: 24px; padding-block: 36px; border-bottom: 1px solid var(--line); align-items: start; }
+.le .line .no { font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; padding-top: 6px; }
+.le .line .name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding-top: 6px; }
+.le .line h2 { font-size: 32px; line-height: 1.1; letter-spacing: -.02em; }
+.le .line p { color: var(--ink-2); font-size: 18px; margin-top: 6px; }
+.le .line .ph { aspect-ratio: 21 / 9; margin-top: 20px; }
+.le .steps { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.le .steps li { border: 2px solid var(--ink); padding: 10px 16px; font-weight: 700; font-size: 18px; }
+.le .line p.promise { font-size: 44px; font-weight: 800; letter-spacing: -.025em; line-height: 1.05; }
+.le .contact-lines { display: grid; gap: 4px; font-size: 26px; margin-top: 12px; }
+.le footer .wrap { padding-block: 28px; }
+
+/* ================================================= phone */
+@media (max-width: 800px) {
+  .menu { gap: 14px; font-size: 14px; flex-wrap: wrap; }
+  .la header .wrap, .lc header .wrap, .le header .wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .la .hero .wrap, .la .row .wrap, .la .contact .wrap, .lc .band .wrap, .lc .contact .wrap, .le .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .la .row.flip .ph { order: 2; }
+  .la h1, .lb h1, .lc h1, .le h1 { font-size: 40px; }
+  .la .steps ol, .ld .steps { grid-template-columns: 1fr; }
+  .la .promise p { font-size: 44px; }
+  .la .contact-lines { justify-items: start; font-size: 22px; }
+  .lb .hero { padding-block: 64px 40px; }
+  .lb section.s { grid-template-columns: 1fr; gap: 8px; }
+  .lc .hero { min-height: 560px; margin-top: 0; }
+  .lc .hero-card { padding: 24px; }
+  .lc .band h2, .lc .contact h2 { font-size: 44px; }
+  .lc .steps li { font-size: 22px; grid-template-columns: 56px 1fr; }
+  .lc .steps li::before { font-size: 40px; }
+  .lc .contact-lines { font-size: 22px; }
+  .ld { grid-template-columns: 1fr; }
+  .ld aside { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 24px 20px; }
+  .ld h1 { margin-top: 0; }
+  .ld main { padding: 20px; gap: 20px; }
+  .ld .pair { grid-template-columns: 1fr; gap: 20px; }
+  .ld .block { padding: 24px; }
+  .ld .promise, .le .line p.promise { font-size: 40px; }
+  .lb section.s p.promise { font-size: 30px; }
+  .le .line { grid-template-columns: 1fr; gap: 6px; }
+  .le .contact-lines { font-size: 22px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="chooser">
+  <div class="chooser-in" role="tablist" aria-label="Layout options">
+    <strong>Layouts</strong>
+    <button type="button" role="tab" id="tab-a" data-l="a"><b>A</b>Split</button>
+    <button type="button" role="tab" id="tab-b" data-l="b"><b>B</b>Letter</button>
+    <button type="button" role="tab" id="tab-c" data-l="c"><b>C</b>Bands</button>
+    <button type="button" role="tab" id="tab-d" data-l="d"><b>D</b>Sidebar</button>
+    <button type="button" role="tab" id="tab-e" data-l="e"><b>E</b>The list</button>
+  </div>
+</div>
+<div class="about-layout"><div id="desc"></div></div>
+
+<!-- ============================ A — Split -->
+<div class="layout la" id="a" data-desc="A — Split. Words on one side, a photo on the other, trading sides as you scroll. The steps sit in three boxes; the page ends on a dark contact band. The classic, safe business layout.">
+  <header><div class="wrap"><a class="logo" href="#a">E&amp;N</a><nav class="menu"><a href="#a-supplies">Supplies</a><a href="#a-how">How it works</a><a href="#a-who">Who we serve</a><a href="#a-contact">Contact</a></nav></div></header>
+  <section class="hero"><div class="wrap">
+    <div><h1>Send us the list. We&rsquo;ll handle the rest.</h1><p>Tell us what you need. We&rsquo;ll find it, price it and get it to you.</p><a class="btn" href="#a-contact">Send your list</a></div>
+    <div class="ph">Photo</div>
+  </div></section>
+  <section class="row" id="a-supplies"><div class="wrap"><div class="ph">Photo</div><div><h2>Whatever&rsquo;s on your list</h2><p>From a single fuse to a pallet of paper towels.</p></div></div></section>
+  <section class="steps" id="a-how"><div class="wrap"><h2>How it works</h2><ol><li>Send your list</li><li>We quote it</li><li>It arrives</li></ol></div></section>
+  <section class="row flip" id="a-who"><div class="wrap"><div><h2>Whoever keeps things running</h2><p>Maintenance crews, office managers and purchasing teams.</p></div><div class="ph">Photo</div></div></section>
+  <section class="promise"><div class="wrap"><p>Exact. Delivered. Fast.</p></div></section>
+  <section class="aboutus"><div class="wrap"><p>E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p></div></section>
+  <section class="contact" id="a-contact"><div class="wrap"><div><h2>Let&rsquo;s talk</h2><p>Call or email. A real person answers.</p></div><div class="contact-lines"><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a><a href="tel:+12622062108">262-206-2108</a></div></div></section>
+  <footer><div class="wrap foot">E&amp;N Service Company &mdash; procurement for the public and private sector.</div></footer>
+</div>
+
+<!-- ============================ B — Letter -->
+<div class="layout lb" id="b" hidden data-desc="B — Letter. One narrow column, read top to bottom like a note from the company. Almost no pictures: one wide photo under the headline. Lots of white space; each section is a small label and a line.">
+  <div class="col"><header><a class="logo" href="#b">E&amp;N</a><nav class="menu"><a href="#b-supplies">Supplies</a><a href="#b-how">How it works</a><a href="#b-who">Who we serve</a><a href="#b-contact">Contact</a></nav></header>
+  <section class="hero"><h1>Send us the list. We&rsquo;ll handle the rest.</h1><p>Tell us what you need. We&rsquo;ll find it, price it and get it to you.</p><a class="btn" href="#b-contact">Send your list</a></section></div>
+  <div class="strip"><div class="ph">Wide photo</div></div>
+  <div class="col">
+    <section class="s" id="b-supplies"><div class="label">What we supply</div><div><h2>Whatever&rsquo;s on your list</h2><p>From a single fuse to a pallet of paper towels.</p></div></section>
+    <section class="s" id="b-how"><div class="label">How it works</div><ol class="steps"><li>Send your list</li><li>We quote it</li><li>It arrives</li></ol></section>
+    <section class="s" id="b-who"><div class="label">Who we serve</div><div><h2>Whoever keeps things running</h2><p>Maintenance crews, office managers and purchasing teams.</p></div></section>
+    <section class="s"><div class="label">Our promise</div><p class="promise">Exact.<br>Delivered.<br>Fast.</p></section>
+    <section class="s"><div class="label">About us</div><p style="color:var(--ink);font-size:19px;margin:0">E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p></section>
+    <section class="s" id="b-contact"><div class="label">Contact</div><div><h2>Let&rsquo;s talk</h2><p>Call or email. A real person answers.</p><div class="contact-lines"><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a><a href="tel:+12622062108">262-206-2108</a></div></div></section>
+    <footer class="foot">E&amp;N Service Company &mdash; procurement for the public and private sector.</footer>
+  </div>
+</div>
+
+<!-- ============================ C — Bands -->
+<div class="layout lc" id="c" hidden data-desc="C — Bands. A full-screen photo with the headline in a white box over its corner. Then wide bands, each with one huge heading on the left and its line on the right. The promise gets a black band with giant words.">
+  <header><div class="wrap"><a class="logo" href="#c" style="background:#fff;padding:4px 8px">E&amp;N</a><nav class="menu" style="background:#fff;padding:6px 12px"><a href="#c-supplies">Supplies</a><a href="#c-how">How it works</a><a href="#c-who">Who we serve</a><a href="#c-contact">Contact</a></nav></div></header>
+  <section class="hero"><div class="ph">Full-width photo</div><div class="wrap"><div class="hero-card"><h1>Send us the list. We&rsquo;ll handle the rest.</h1><p>Tell us what you need. We&rsquo;ll find it, price it and get it to you.</p><a class="btn" href="#c-contact">Send your list</a></div></div></section>
+  <section class="band" id="c-supplies"><div class="wrap"><h2>Whatever&rsquo;s on your list</h2><div><p>From a single fuse to a pallet of paper towels.</p><div class="ph">Photo</div></div></div></section>
+  <section class="band shade" id="c-how"><div class="wrap"><h2>How it works</h2><ol class="steps"><li>Send your list</li><li>We quote it</li><li>It arrives</li></ol></div></section>
+  <section class="band" id="c-who"><div class="wrap"><h2>Whoever keeps things running</h2><div><p>Maintenance crews, office managers and purchasing teams.</p><div class="ph">Photo</div></div></div></section>
+  <section class="promise"><div class="wrap"><p>Exact.<br>Delivered.<br>Fast.</p></div></section>
+  <section class="band"><div class="wrap"><h2>About us</h2><p>E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p></div></section>
+  <section class="contact shade band" id="c-contact" style="background:var(--soft)"><div class="wrap"><h2>Let&rsquo;s talk</h2><div><p style="font-size:21px;color:var(--ink-2)">Call or email. A real person answers.</p><div class="contact-lines"><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a><a href="tel:+12622062108">262-206-2108</a></div></div></div></section>
+  <footer><div class="wrap foot">E&amp;N Service Company &mdash; procurement for the public and private sector.</div></footer>
+</div>
+
+<!-- ============================ D — Sidebar -->
+<div class="layout ld" id="d" hidden data-desc="D — Sidebar. The headline, menu, button and phone number stay pinned on the left the whole time; everything else scrolls past on the right in blocks. The contact info is never more than a glance away.">
+  <aside>
+    <a class="logo" href="#d">E&amp;N</a>
+    <nav class="menu"><a href="#d-supplies">Supplies</a><a href="#d-how">How it works</a><a href="#d-who">Who we serve</a><a href="#d-contact">Contact</a></nav>
+    <h1>Send us the list. We&rsquo;ll handle the rest.</h1>
+    <p>Tell us what you need. We&rsquo;ll find it, price it and get it to you.</p>
+    <a class="btn" href="#d-contact">Send your list</a>
+    <div class="side-contact"><a href="tel:+12622062108">262-206-2108</a><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a></div>
+  </aside>
+  <main>
+    <div class="big"><div class="ph">Big photo</div></div>
+    <div class="pair">
+      <div class="block" id="d-supplies"><h2>Whatever&rsquo;s on your list</h2><p>From a single fuse to a pallet of paper towels.</p><div class="ph">Photo</div></div>
+      <div class="block" id="d-who"><h2>Whoever keeps things running</h2><p>Maintenance crews, office managers and purchasing teams.</p><div class="ph">Photo</div></div>
+    </div>
+    <div id="d-how"><ol class="steps"><li>Send your list</li><li>We quote it</li><li>It arrives</li></ol></div>
+    <p class="promise">Exact. Delivered. Fast.</p>
+    <div class="block"><p style="color:var(--ink);font-size:20px">E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p></div>
+    <div class="contact" id="d-contact"><h2>Let&rsquo;s talk</h2><p>Call or email. A real person answers.</p><div class="contact-lines"><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a><a href="tel:+12622062108">262-206-2108</a></div></div>
+    <p class="foot">E&amp;N Service Company &mdash; procurement for the public and private sector.</p>
+  </main>
+</div>
+
+<!-- ============================ E — The list -->
+<div class="layout le" id="e" hidden data-desc="E — The list. Built around your headline: next to it sits a shopping list with items checked off as found. Each section below is a numbered line on the list, like an order form. The most unusual option.">
+  <header><div class="wrap"><a class="logo" href="#e">E&amp;N</a><nav class="menu"><a href="#e-supplies">Supplies</a><a href="#e-how">How it works</a><a href="#e-who">Who we serve</a><a href="#e-contact">Contact</a></nav></div></header>
+  <section class="hero"><div class="wrap">
+    <div><h1>Send us the list. We&rsquo;ll handle the rest.</h1><p>Tell us what you need. We&rsquo;ll find it, price it and get it to you.</p><a class="btn" href="#e-contact">Send your list</a></div>
+    <div class="sheet" aria-label="Example list">
+      <div class="sheet-head"><span>Your list</span><span>Example</span></div>
+      <ol>
+        <li><span>1</span><span>LED shop light, 4 ft</span><span class="ok">Found</span></li>
+        <li><span>2</span><span>Faucet cartridge, part no.</span><span class="ok">Found</span></li>
+        <li><span>3</span><span>Paper towels, case of 12</span><span class="ok">Found</span></li>
+        <li><span>4</span><span>Replacement fuse, 30 A</span><span class="ok">Found</span></li>
+        <li><span>5</span><span>Safety glasses, box</span><span class="ok">Found</span></li>
+      </ol>
+      <div class="sheet-foot">One price, shipping included.</div>
+    </div>
+  </div></section>
+  <div class="wrap"><div class="lines">
+    <section class="line" id="e-supplies"><span class="no">01</span><span class="name">What we supply</span><div><h2>Whatever&rsquo;s on your list</h2><p>From a single fuse to a pallet of paper towels.</p><div class="ph">Photo</div></div></section>
+    <section class="line" id="e-how"><span class="no">02</span><span class="name">How it works</span><ol class="steps"><li>1 &nbsp;Send your list</li><li>2 &nbsp;We quote it</li><li>3 &nbsp;It arrives</li></ol></section>
+    <section class="line" id="e-who"><span class="no">03</span><span class="name">Who we serve</span><div><h2>Whoever keeps things running</h2><p>Maintenance crews, office managers and purchasing teams.</p></div></section>
+    <section class="line"><span class="no">04</span><span class="name">Our promise</span><p class="promise">Exact. Delivered. Fast.</p></section>
+    <section class="line"><span class="no">05</span><span class="name">About us</span><p style="color:var(--ink);font-size:20px;margin:0">E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p></section>
+    <section class="line" id="e-contact"><span class="no">06</span><span class="name">Contact</span><div><h2>Let&rsquo;s talk</h2><p>Call or email. A real person answers.</p><div class="contact-lines"><a href="mailto:enservicecompany@gmail.com">enservicecompany@gmail.com</a><a href="tel:+12622062108">262-206-2108</a></div></div></section>
+  </div></div>
+  <footer><div class="wrap foot">E&amp;N Service Company &mdash; procurement for the public and private sector.</div></footer>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('[data-l]');
+function show(id) {
+  document.querySelectorAll('.layout').forEach(l => l.hidden = l.id !== id);
+  tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.l === id)));
+  document.getElementById('desc').textContent = document.getElementById(id).dataset.desc;
+  try { localStorage.setItem('en-layout-tab', id); } catch (e) {}
+}
+tabs.forEach(t => t.addEventListener('click', () => { show(t.dataset.l); window.scrollTo(0, 0); }));
+let start = 'a';
+const h = location.hash.slice(1);
+if (/^[a-e]$/.test(h)) start = h;
+else { try { const s = localStorage.getItem('en-layout-tab'); if (/^[a-e]$/.test(s || '')) start = s; } catch (e) {} }
+show(start);
+</script>
