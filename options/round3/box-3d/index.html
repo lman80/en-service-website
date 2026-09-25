@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E&amp;N Service Company</title>
+<meta name="description" content="E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+<script src="logo-paths.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Studio backdrop + 3D stage (fixed, behind the story) -->
+<div class="backdrop" aria-hidden="true">
+  <div class="backdrop__light"></div>
+  <div class="backdrop__dark"></div>
+</div>
+<div class="stage" aria-hidden="true">
+  <canvas id="box-canvas"></canvas>
+  <!-- Static fallback: shown when WebGL/JS is unavailable -->
+  <svg class="fallback-box" viewBox="0 0 420 380" role="img" aria-label="A taped cardboard box with a shipping label">
+    <defs>
+      <linearGradient id="fbTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9b07e"/><stop offset="1" stop-color="#c99d6b"/></linearGradient>
+      <linearGradient id="fbLeft" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b98c5b"/><stop offset="1" stop-color="#c29563"/></linearGradient>
+      <linearGradient id="fbRight" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a77a4b"/><stop offset="1" stop-color="#946a3f"/></linearGradient>
+      <radialGradient id="fbShadow"><stop offset="0" stop-color="#1c1f24" stop-opacity=".28"/><stop offset="1" stop-color="#1c1f24" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="210" cy="338" rx="190" ry="30" fill="url(#fbShadow)"/>
+    <polygon points="40,110 250,70 380,120 170,165" fill="url(#fbTop)"/>
+    <polygon points="40,110 170,165 170,330 40,270" fill="url(#fbLeft)"/>
+    <polygon points="170,165 380,120 380,280 170,330" fill="url(#fbRight)"/>
+    <polygon points="105,98 315,58 322,62 112,103" fill="#000" opacity=".08"/>
+    <polygon points="98,96 308,57 330,66 120,106" fill="#f2551d"/>
+    <polygon points="98,96 120,106 120,142 98,131" fill="#d9481a"/>
+    <polygon points="210,178 350,148 350,232 210,264" fill="#fbfaf7"/>
+    <polygon points="210,178 350,148 350,166 210,196" fill="#15171b"/>
+    <g fill="#15171b"><polygon points="222,238 226,237 226,254 222,255"/><polygon points="230,236 232,236 232,253 230,253"/><polygon points="236,235 241,234 241,251 236,252"/><polygon points="245,233 247,233 247,250 245,250"/><polygon points="251,232 256,231 256,248 251,249"/><polygon points="260,230 262,230 262,247 260,247"/><polygon points="266,229 271,228 271,245 266,246"/></g>
+  </svg>
+</div>
+
+<header class="site-header" id="top">
+  <a class="brand" href="#top" aria-label="E&amp;N Service Company, back to top">
+    <svg class="en-lockup" viewBox="0 0 2082.50 606.34" aria-hidden="true" focusable="false"><defs><mask id="enk6" maskUnits="userSpaceOnUse" x="0" y="0" width="2082.50" height="606.34"><rect width="2082.50" height="606.34" fill="#fff"/><path d="M198.17 433.13C127.62 429.41 79.18 365.54 94.04 295.83C103.01 253.73 138.37 218.71 180.69 210.03C240.82 197.69 295.85 231.16 306.81 286.74C310.39 304.91 309.29 333.57 304.91 336.08C304.32 336.41 289.50 336.53 231.62 336.67C148.49 336.86 157.43 336.45 157.77 340.00C159.78 360.75 182.57 377.80 208.33 377.81C227.57 377.83 241.73 371.92 256.36 357.79C260.96 353.35 260.95 353.35 267.67 358.64C272.22 362.23 274.09 363.66 282.67 370.11C302.57 385.08 301.22 383.25 296.60 388.85C271.21 419.62 236.66 435.16 198.17 433.13ZM389.17 432.46C328.33 427.49 294.29 367.72 319.88 310.83C327.63 293.60 345.05 275.42 365.80 262.90C371.54 259.44 371.83 260.45 361.12 246.30C341.50 220.35 337.12 196.94 347.36 172.70C361.05 140.30 401.72 123.05 440.92 133.02C471.93 140.90 491.80 164.72 491.79 194.00C491.78 221.10 476.96 244.71 445.79 267.28C441.34 270.50 440.36 268.55 457.46 290.50C460.03 293.80 463.48 298.30 465.13 300.50C466.78 302.70 469.69 306.45 471.60 308.83C477.33 315.98 477.04 316.02 480.61 307.61C483.87 299.96 485.16 296.30 488.15 286.35C491.10 276.52 491.35 275.86 492.26 275.37C493.58 274.67 539.85 274.76 540.63 275.47C541.58 276.33 541.54 277.89 540.47 281.55C540.00 283.17 538.88 287.05 537.99 290.17C531.49 312.77 522.59 333.67 512.01 351.15C508.65 356.69 508.65 356.65 513.47 362.83C515.04 364.85 519.13 370.18 522.55 374.67C525.97 379.16 530.24 384.71 532.04 387.00C533.84 389.29 537.20 393.72 539.52 396.83C545.29 404.61 546.68 405.95 547.56 404.58C547.71 404.35 547.91 362.13 548.00 310.76L548.17 217.35L548.93 216.59L549.69 215.83L580.17 215.83L610.65 215.83L611.41 216.59C612.16 217.35 612.17 217.43 612.33 228.99C612.54 243.43 612.67 243.68 617.05 237.94C633.69 216.06 662.48 206.23 697.03 210.65C733.98 215.37 761.75 242.43 767.89 279.67C768.86 285.55 768.98 427.20 768.02 428.24C766.97 429.36 765.78 429.39 733.26 429.28L702.68 429.17L701.93 428.41L701.17 427.65L700.98 363.24C700.78 293.00 700.91 297.66 698.96 291.68C691.61 269.15 665.29 260.23 640.43 271.84C626.20 278.49 617.02 291.10 613.28 309.17L612.52 312.83L612.34 370.28L612.17 427.73L611.42 428.33C610.16 429.35 607.33 429.39 553.33 429.27C508.64 429.17 501.37 429.09 500.53 428.67C499.56 428.18 498.68 427.05 487.56 412.17C474.81 395.10 476.25 396.20 471.91 400.29C447.76 423.03 417.55 434.78 389.17 432.46ZM413.17 378.85C423.96 376.92 433.91 371.48 443.23 362.40C447.86 357.89 447.89 358.15 441.77 350.33C439.26 347.12 435.47 342.25 433.35 339.49C425.67 329.50 415.92 317.16 405.20 303.83C399.70 297.00 399.54 296.92 395.95 299.56C375.58 314.53 368.27 326.15 368.21 343.67C368.13 367.86 387.95 383.38 413.17 378.85ZM243.75 298.38C248.78 298.31 249.12 297.62 247.32 291.14C235.98 250.30 180.14 247.52 161.15 286.86C157.21 295.04 156.93 297.89 160.04 298.31C161.25 298.47 233.02 298.53 243.75 298.38ZM416.68 231.61C428.68 222.03 433.52 216.57 436.76 209.00C445.83 187.78 426.65 167.37 406.83 177.15C394.71 183.13 390.44 198.27 397.01 211.97C399.32 216.79 410.71 232.43 412.40 233.11C413.63 233.60 414.64 233.25 416.68 231.61Z" fill="#000"/></mask></defs><g mask="url(#enk6)" fill="currentColor"><path d="M866 303.17C866 493.86 705.35 606.34 433 606.34C160.65 606.34 0 493.86 0 303.17C0 112.48 160.65 0 433 0C705.35 0 866 112.48 866 303.17Z"/><path d="M1008.75 253.17Q990 253.17 974 248.8Q958 244.42 946.25 235.92L965.5 208.67Q978 216.17 988.25 219.55Q998.5 222.92 1008.5 222.92Q1018.5 222.92 1024.38 220.05Q1030.25 217.17 1030.25 212.42Q1030.25 208.67 1027 206.3Q1023.75 203.92 1016.75 202.92L990.5 198.92Q970.75 195.92 960.38 185.8Q950 175.67 950 159.42Q950 145.92 956.88 136.3Q963.75 126.67 976.5 121.55Q989.25 116.42 1007 116.42Q1021.5 116.42 1035.75 120.42Q1050 124.42 1062.25 132.42L1043 158.42Q1032.25 152.17 1022.5 149.3Q1012.75 146.42 1003 146.42Q995.25 146.42 990.5 149.05Q985.75 151.67 985.75 155.92Q985.75 159.92 989.25 162.3Q992.75 164.67 1001.25 165.92L1027.5 169.92Q1047 172.67 1057.62 182.8Q1068.25 192.92 1068.25 208.42Q1068.25 221.42 1060.5 231.42Q1052.75 241.42 1039.38 247.3Q1026 253.17 1008.75 253.17ZM1149.75 253.17Q1129.5 253.17 1113.12 244.05Q1096.75 234.92 1087.25 219.42Q1077.75 203.92 1077.75 184.67Q1077.75 165.42 1086.88 149.92Q1096 134.42 1111.75 125.3Q1127.5 116.17 1146.75 116.17Q1166.25 116.17 1181.25 125.55Q1196.25 134.92 1204.88 151.17Q1213.5 167.42 1213.5 188.42V198.42H1119.25Q1122 204.67 1126.62 209.42Q1131.25 214.17 1137.75 216.8Q1144.25 219.42 1151.75 219.42Q1160 219.42 1166.75 216.8Q1173.5 214.17 1178.25 209.42L1205 233.17Q1192.5 243.67 1179.38 248.42Q1166.25 253.17 1149.75 253.17ZM1118.5 170.17H1173.75Q1171.75 163.67 1167.62 159.05Q1163.5 154.42 1158 151.8Q1152.5 149.17 1146 149.17Q1139.25 149.17 1133.75 151.67Q1128.25 154.17 1124.38 158.8Q1120.5 163.42 1118.5 170.17ZM1232.5 250.67V118.42H1273V131.67Q1279.5 123.67 1288.25 119.55Q1297 115.42 1307.75 115.42Q1318.5 115.67 1323 118.67V153.92Q1319 151.92 1314 150.92Q1309 149.92 1303.75 149.92Q1294.25 149.92 1286.12 154.3Q1278 158.67 1273 166.67V250.67ZM1384 250.67 1327.5 118.42H1371.5L1404.25 199.42L1437 118.42H1480L1423.5 250.67ZM1492 250.67V118.42H1532.5V250.67ZM1512.25 106.17Q1503 106.17 1496.5 99.67Q1490 93.17 1490 83.92Q1490 74.58 1496.5 68.12Q1503 61.67 1512.25 61.67Q1521.6 61.67 1528.05 68.12Q1534.5 74.58 1534.5 83.92Q1534.5 93.17 1528.05 99.67Q1521.6 106.17 1512.25 106.17ZM1621.5 253.17Q1601.75 253.17 1585.88 244.17Q1570 235.17 1560.75 219.55Q1551.5 203.92 1551.5 184.67Q1551.5 165.17 1560.75 149.67Q1570 134.17 1585.88 125.05Q1601.75 115.92 1621.5 115.92Q1637.75 115.92 1652.5 122.3Q1667.25 128.67 1677.5 140.42L1652.75 166.17Q1645.75 158.17 1638.5 154.55Q1631.25 150.92 1622.5 150.92Q1613.75 150.92 1606.75 155.3Q1599.75 159.67 1595.75 167.3Q1591.75 174.92 1591.75 184.67Q1591.75 194.17 1595.88 201.8Q1600 209.42 1607.25 213.8Q1614.5 218.17 1623.5 218.17Q1631.75 218.17 1638.75 214.67Q1645.75 211.17 1652.25 203.92L1676.25 228.92Q1666.25 240.42 1651.75 246.8Q1637.25 253.17 1621.5 253.17ZM1758.25 253.17Q1738 253.17 1721.62 244.05Q1705.25 234.92 1695.75 219.42Q1686.25 203.92 1686.25 184.67Q1686.25 165.42 1695.38 149.92Q1704.5 134.42 1720.25 125.3Q1736 116.17 1755.25 116.17Q1774.75 116.17 1789.75 125.55Q1804.75 134.92 1813.38 151.17Q1822 167.42 1822 188.42V198.42H1727.75Q1730.5 204.67 1735.12 209.42Q1739.75 214.17 1746.25 216.8Q1752.75 219.42 1760.25 219.42Q1768.5 219.42 1775.25 216.8Q1782 214.17 1786.75 209.42L1813.5 233.17Q1801 243.67 1787.88 248.42Q1774.75 253.17 1758.25 253.17ZM1727 170.17H1782.25Q1780.25 163.67 1776.12 159.05Q1772 154.42 1766.5 151.8Q1761 149.17 1754.5 149.17Q1747.75 149.17 1742.25 151.67Q1736.75 154.17 1732.88 158.8Q1729 163.42 1727 170.17ZM1020.5 503.17Q1000.75 503.17 984.88 494.17Q969 485.17 959.75 469.55Q950.5 453.92 950.5 434.67Q950.5 415.17 959.75 399.67Q969 384.17 984.88 375.05Q1000.75 365.92 1020.5 365.92Q1036.75 365.92 1051.5 372.3Q1066.25 378.67 1076.5 390.42L1051.75 416.17Q1044.75 408.17 1037.5 404.55Q1030.25 400.92 1021.5 400.92Q1012.75 400.92 1005.75 405.3Q998.75 409.67 994.75 417.3Q990.75 424.92 990.75 434.67Q990.75 444.17 994.88 451.8Q999 459.42 1006.25 463.8Q1013.5 468.17 1022.5 468.17Q1030.75 468.17 1037.75 464.67Q1044.75 461.17 1051.25 453.92L1075.25 478.92Q1065.25 490.42 1050.75 496.8Q1036.25 503.17 1020.5 503.17ZM1157 503.17Q1136.75 503.17 1120.46 494.08Q1104.18 484.99 1094.71 469.44Q1085.25 453.89 1085.25 434.66Q1085.25 415.42 1094.71 399.8Q1104.18 384.18 1120.46 375.05Q1136.75 365.92 1157 365.92Q1177.18 365.92 1193.44 375.04Q1209.69 384.15 1219.22 399.75Q1228.75 415.34 1228.75 434.63Q1228.75 453.92 1219.22 469.46Q1209.69 485 1193.44 494.08Q1177.18 503.17 1157 503.17ZM1157 468.17Q1166.25 468.17 1173.48 463.68Q1180.71 459.19 1184.98 451.59Q1189.25 443.99 1189.25 434.67Q1189.25 425.17 1185 417.55Q1180.75 409.92 1173.4 405.42Q1166.06 400.92 1157.03 400.92Q1148 400.92 1140.62 405.42Q1133.25 409.92 1129 417.5Q1124.75 425.08 1124.75 434.67Q1124.75 443.99 1129 451.58Q1133.25 459.17 1140.61 463.67Q1147.96 468.17 1157 468.17ZM1247.75 500.67V368.42H1288.25V376.92Q1302.25 365.92 1321.25 365.92Q1333.75 365.92 1343.75 370.67Q1353.75 375.42 1360.5 384.17Q1368.5 375.42 1379.5 370.67Q1390.5 365.92 1403.5 365.92Q1418.5 365.92 1430 372.67Q1441.5 379.42 1448.12 391.42Q1454.75 403.42 1454.75 419.17V500.67H1414.25V424.67Q1414.25 413.67 1408.38 407.17Q1402.5 400.67 1392.75 400.67Q1386 400.67 1380.5 403.17Q1375 405.67 1371 410.67Q1371.25 412.67 1371.38 414.8Q1371.5 416.92 1371.5 419.17V500.67H1331V424.67Q1331 413.67 1325.12 407.17Q1319.25 400.67 1309.5 400.67Q1302.75 400.67 1297.38 403.05Q1292 405.42 1288.25 410.17V500.67ZM1478.75 551.67V368.42H1518.75V378.17Q1534.5 366.67 1554.25 366.67Q1573.27 366.67 1588.54 375.81Q1603.8 384.95 1612.78 400.31Q1621.75 415.67 1621.75 434.67Q1621.75 453.67 1612.59 469Q1603.43 484.34 1587.84 493.38Q1572.25 502.42 1553 502.42Q1543.83 502.42 1535.29 500.17Q1526.75 497.92 1519.25 493.67V551.67ZM1547.25 468.17Q1557.25 468.17 1565 463.8Q1572.75 459.42 1577.38 451.86Q1582 444.29 1582 434.73Q1582 425.17 1577.39 417.57Q1572.79 409.98 1564.89 405.57Q1557 401.17 1547.33 401.17Q1538.75 401.17 1531.75 403.8Q1524.75 406.42 1519.25 411.67V457.92Q1524.5 462.67 1531.79 465.42Q1539.07 468.17 1547.25 468.17ZM1683 502.92Q1669 502.92 1658.12 497.67Q1647.25 492.42 1641.12 483.17Q1635 473.92 1635 461.92Q1635 442.92 1649.38 432.55Q1663.75 422.17 1689.5 422.17Q1705 422.17 1719.5 425.92V419.42Q1719.5 409.42 1713.12 404.55Q1706.75 399.67 1694.25 399.67Q1686.5 399.67 1676.88 402.17Q1667.25 404.67 1654.25 410.17L1639.75 380.42Q1656 373.17 1671.12 369.55Q1686.25 365.92 1701.5 365.92Q1729 365.92 1744.25 379.05Q1759.5 392.17 1759.5 415.92V500.67H1719.5V492.67Q1711.5 498.17 1702.62 500.55Q1693.75 502.92 1683 502.92ZM1673.5 461.17Q1673.5 467.42 1679 470.92Q1684.5 474.42 1694.25 474.42Q1701.5 474.42 1707.88 472.92Q1714.25 471.42 1719.5 468.17V451.17Q1713.75 449.67 1707.75 448.92Q1701.75 448.17 1695.5 448.17Q1685 448.17 1679.25 451.55Q1673.5 454.92 1673.5 461.17ZM1783.5 500.67V368.42H1824V377.42Q1839 365.92 1859.5 365.92Q1875 365.92 1886.88 372.67Q1898.75 379.42 1905.5 391.42Q1912.25 403.42 1912.25 419.17V500.67H1871.75V424.67Q1871.75 413.67 1865.25 407.17Q1858.75 400.67 1847.75 400.67Q1840 400.67 1834.12 403.42Q1828.25 406.17 1824 411.17V500.67ZM1952 554.67Q1947.25 554.67 1942.75 554.3Q1938.25 553.92 1935.25 553.17V518.67Q1940.25 519.67 1947.75 519.67Q1967.25 519.67 1974 502.67V502.42L1923.25 368.42H1968L1997.25 451.67L2031.25 368.42H2075L2015.75 507.42Q2008.5 524.67 1999.75 535.05Q1991 545.42 1979.5 550.05Q1968 554.67 1952 554.67Z"/></g></svg>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#supplies">Supplies</a>
+    <a href="#how">How it works</a>
+    <a href="#who">Who we serve</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="story" id="story">
+
+    <!-- HERO -->
+    <section class="hero scene" id="hero" data-scene="0">
+      <div class="hero__copy">
+        <h1 class="hero__title">
+          <span class="line"><span class="rise" style="--d:0">Send us<br> the list.</span></span>
+          <span class="line line--accent"><span class="rise" style="--d:1">We'll handle<br> the rest.</span></span>
+        </h1>
+        <p class="hero__lede rise-soft">Tell us what you need. We'll find it, price it and get it to you.</p>
+        <form class="listform rise-soft" id="listform" action="mailto:enservicecompany@gmail.com" method="get">
+          <label class="sr-only" for="list-input">Your list</label>
+          <input id="list-input" name="body" type="text" autocomplete="off" placeholder="e.g. 30 A fuse, work gloves, HVAC filter">
+          <input type="hidden" name="subject" value="Quote request">
+          <button class="cta" type="submit"><span>Send your list</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+        </form>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- SUPPLIES -->
+    <section class="scene scene--tall scene--supplies" id="supplies" data-scene="1">
+      <div class="sticky">
+        <div class="panel">
+          <p class="eyebrow">Supplies</p>
+          <h2 class="h2">Whatever's on your list</h2>
+          <p class="lede">From a single fuse to a pallet of paper towels.</p>
+          <ul class="chips" aria-label="Example items">
+            <li class="chip" data-item="0"><span class="chip__tick" aria-hidden="true"></span>Hex bolts</li>
+            <li class="chip" data-item="1"><span class="chip__tick" aria-hidden="true"></span>30 A fuse</li>
+            <li class="chip" data-item="2"><span class="chip__tick" aria-hidden="true"></span>Paper towels (case)</li>
+            <li class="chip" data-item="3"><span class="chip__tick" aria-hidden="true"></span>LED shop light 4 ft</li>
+            <li class="chip" data-item="4"><span class="chip__tick" aria-hidden="true"></span>Padlock</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="scene scene--tall scene--how" id="how" data-scene="2">
+      <div class="sticky">
+        <div class="panel">
+          <p class="eyebrow">How it works</p>
+          <ol class="steps">
+            <li class="step" data-step="0"><span class="step__n">01</span><span class="step__t">Send your list</span></li>
+            <li class="step__arrow" aria-hidden="true">&rarr;</li>
+            <li class="step" data-step="1"><span class="step__n">02</span><span class="step__t">We quote it</span></li>
+            <li class="step__arrow" aria-hidden="true">&rarr;</li>
+            <li class="step" data-step="2"><span class="step__n">03</span><span class="step__t">It arrives</span></li>
+          </ol>
+          <div class="steps__bar" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMISE -->
+    <section class="scene scene--tall scene--promise" id="promise" data-scene="3" aria-label="Our promise">
+      <div class="sticky">
+        <p class="promise">
+          <span class="word" data-word="0">Exact.</span>
+          <span class="word" data-word="1">Delivered.</span>
+          <span class="word word--accent" data-word="2">Fast.</span>
+        </p>
+        <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- WHO -->
+  <section class="who" id="who">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light">Who we serve</p>
+      <h2 class="h2 h2--xl">Whoever keeps things running</h2>
+      <p class="lede lede--light">
+        <span class="role">Maintenance crews</span>, <span class="role">office managers</span> and <span class="role">purchasing teams</span>.
+      </p>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>LED shop light 4 ft</span><span>Faucet cartridge</span><span>Paper towels (case)</span><span>30 A fuse</span><span>Safety glasses</span><span>Hex bolts</span><span>Extension cord</span><span>Mop bucket</span><span>Printer toner</span><span>Work gloves</span><span>HVAC filter</span><span>Padlock</span>
+        <span>LED shop light 4 ft</span><span>Faucet cartridge</span><span>Paper towels (case)</span><span>30 A fuse</span><span>Safety glasses</span><span>Hex bolts</span><span>Extension cord</span><span>Mop bucket</span><span>Printer toner</span><span>Work gloves</span><span>HVAC filter</span><span>Padlock</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about" aria-label="About us">
+    <div class="wrap">
+      <p class="eyebrow">About us</p>
+      <p class="about__text" id="about-text">E&amp;N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap contact__grid">
+      <div>
+        <h2 class="contact__title">Let's talk</h2>
+        <p class="contact__lede">Call or email. A real person answers.</p>
+      </div>
+      <div class="contact__links">
+        <a class="biglink" href="mailto:enservicecompany@gmail.com"><span class="biglink__k">Email</span><span class="biglink__v">enservicecompany@gmail.com</span></a>
+        <a class="biglink" href="tel:+12622062108"><span class="biglink__k">Phone</span><span class="biglink__v">262-206-2108</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>E&amp;N Service Company — procurement for the public and private sector.</p>
+  </div>
+</footer>
+
+<script src="ui.js" defer></script>
+<script type="module" src="box3d.js"></script>
+</body>
+</html>
