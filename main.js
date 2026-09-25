@@ -60,7 +60,9 @@
       })();
     }
 
-    if ('IntersectionObserver' in window) {
+    if (reduce) {
+      finish();                 /* no motion wanted: show the quoted line at once */
+    } else if ('IntersectionObserver' in window) {
       var seen = false;
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
