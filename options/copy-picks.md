@@ -8,6 +8,6 @@
 6. How it works — A: Send your list → We quote it → It arrives
 7. Who we work with — C: Whoever keeps things running / Maintenance crews, office managers and purchasing teams.
 8. Our promise — B: Exact. Delivered. Fast.
-9. About us — (not picked yet)
+9. About us — A: E&N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.
 10. Contact — C: Let's talk / Call or email. A real person answers. (confirmed true)
 11. Footer — A: E&N Service Company — procurement for the public and private sector.
