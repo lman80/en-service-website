@@ -8,7 +8,7 @@
   --blue: #0071e3;
   --blue-hover: #0077ed;
   --blue-dark: #2997ff;
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue",
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, "Helvetica Neue",
           Helvetica, Arial, sans-serif;
 }
 
