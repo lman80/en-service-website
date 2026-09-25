@@ -9,3 +9,6 @@ photo tiles with one headline and one line each, a two-up grid, a quiet footer.
 
 No build step. Serve the folder (`python3 -m http.server`) and visit http://localhost:8000.
 Published by GitHub Pages from `main` / root: https://lman80.github.io/en-service-website/
+
+Every version is kept in `versions/<n>-<name>/` (and tagged in git), listed at
+https://lman80.github.io/en-service-website/versions/
