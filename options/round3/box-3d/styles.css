@@ -61,6 +61,7 @@ h1, h2 { margin: 0; font-weight: 800; }
     linear-gradient(180deg, #eef0f2 0%, var(--bg) 60%, #dfe2e6 100%);
 }
 .backdrop__dark {
+  display: none; /* superseded by .promise__bg (layout-driven) */
   opacity: var(--night, 0);
   background:
     radial-gradient(55vmax 45vmax at var(--spot-x, 72%) 48%, #2a2e35 0%, #181b20 45%, var(--dark) 80%);
@@ -132,13 +133,13 @@ html.reduced .stage { position: absolute; height: 100svh; min-height: 620px; }
 .wrap { padding: 0 var(--gutter); max-width: 1480px; margin: 0 auto; }
 
 /* ---------- Story / scenes ---------- */
-.story { position: relative; z-index: 1; }
+.story { position: relative; } /* no z-index: .promise__bg must sit below the 3D stage */
 .scene { position: relative; }
 .scene--tall { height: 280vh; }
 .scene--how { height: 330vh; }
 .scene--promise { height: 300vh; }
 .sticky {
-  position: sticky; top: 0; height: 100vh; height: 100svh;
+  position: sticky; top: 0; z-index: 1; height: 100vh; height: 100svh;
   display: flex; align-items: center;
   padding: 0 var(--gutter);
 }
@@ -150,7 +151,7 @@ html.reduced .stage { position: absolute; height: 100svh; min-height: 620px; }
   display: flex; align-items: center;
   padding: 120px var(--gutter) 80px;
 }
-.hero__copy { width: min(760px, 56vw); }
+.hero__copy { position: relative; z-index: 1; width: min(760px, 56vw); }
 .hero__title {
   font-family: var(--display);
   font-weight: 850; font-stretch: 118%;
@@ -257,6 +258,30 @@ html.reduced .stage { position: absolute; height: 100svh; min-height: 620px; }
 
 /* ---------- Promise ---------- */
 .scene--promise .sticky { align-items: center; }
+/* The dark studio is part of the promise section's own layout, pinned while the section is on
+   screen. It lives in the root stacking context at z-index -1: above the light backdrop (-2),
+   below the WebGL stage (0) and the text (1). Scroll position alone decides where it is, so it
+   can never lag behind the scroll the way a JS-set colour can. */
+.promise__bg {
+  position: sticky; top: 0; z-index: -1;
+  height: 100vh; height: 100lvh; margin-bottom: -100vh; margin-bottom: -100lvh;
+  background:
+    radial-gradient(55vmax 45vmax at var(--spot-x, 72%) 48%, #2a2e35 0%, #181b20 45%, var(--dark) 80%),
+    var(--dark);
+}
+html.reduced .promise__bg, html.no-story .promise__bg, html:not(.js) .promise__bg { display: none; }
+/* Word timing tied to the scroll position itself where the browser supports it (compositor-driven,
+   same 0..1 range as the JS timeline); the JS .on classes remain the fallback. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.webgl:not(.reduced):not(.no-story) #promise { view-timeline: --promise block; }
+    html.webgl:not(.reduced):not(.no-story) .word { transition: none; animation: word-on linear both; animation-timeline: --promise; }
+    html.webgl:not(.reduced):not(.no-story) .word[data-word="0"] { animation-range: entry 70% entry 100%; }
+    html.webgl:not(.reduced):not(.no-story) .word[data-word="1"] { animation-range: contain 32% contain 36%; }
+    html.webgl:not(.reduced):not(.no-story) .word[data-word="2"] { animation-range: contain 62% contain 66%; }
+  }
+}
+@keyframes word-on { from { opacity: .12; transform: translateX(-.25em); } to { opacity: 1; transform: none; } }
 .promise {
   display: flex; flex-direction: column;
   font-family: var(--display); font-weight: 900; font-stretch: 125%;

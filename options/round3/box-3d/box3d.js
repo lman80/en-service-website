@@ -692,12 +692,12 @@ function resize(force) {
   // ignore small height-only changes (mobile URL bar) to avoid thrash
   if (!force && w === vw && Math.abs(h - vh) < 140) return;
   vw = w; vh = h;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(dprFor(quality));
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   const mobile = w <= 860;
   // shadows: lighter on phones
-  const ms = mobile ? 512 : 1024;
+  const ms = mobile || quality >= 1 ? 512 : 1024;
   if (key.shadow.mapSize.x !== ms) { key.shadow.mapSize.set(ms, ms); if (key.shadow.map) { key.shadow.map.dispose(); key.shadow.map = null; } }
   wake(true);
 }
@@ -726,6 +726,35 @@ let sState = null;
 let running = false, last = performance.now();
 let lastRenderedGone = false;
 let introStart = (!REDUCED && story.t < .3) ? performance.now() + 150 : 0;
+
+/* ---------- quality governor ----------
+   A slow GPU (or Chrome's SwiftShader fallback) can take hundreds of ms per frame. A render
+   loop that busy starves the main thread: the compositor keeps scrolling while every
+   scroll-driven thing in JS falls seconds behind. So: start low on software GL, watch the
+   real frame interval, and step quality down (pixel ratio, then shadows + render-on-demand). */
+function softwareGL() {
+  try {
+    const gl = renderer.getContext();
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    const name = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+    return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(String(name));
+  } catch (e) { return false; }
+}
+let quality = 0;          // 0 full, 1 lighter, 2 low: no shadow maps, no idle bob, render only on change
+const perf = { ema: 16, n: 0 };
+function dprFor(q) { const d = window.devicePixelRatio || 1; return q === 0 ? Math.min(d, 2) : q === 1 ? Math.min(d, 1.25) : Math.min(d, 1); }
+function setQuality(q) {
+  quality = q; perf.n = 0; perf.ema = 16;
+  renderer.setPixelRatio(dprFor(q));
+  renderer.setSize(vw, vh, false);
+  if (q >= 1 && key.shadow.mapSize.x > 512) { key.shadow.mapSize.set(512, 512); if (key.shadow.map) { key.shadow.map.dispose(); key.shadow.map = null; } }
+  if (q >= 2 && renderer.shadowMap.enabled) {
+    renderer.shadowMap.enabled = false; key.castShadow = false;
+    scene.traverse((o) => { if (o.material) [].concat(o.material).forEach((m) => { m.needsUpdate = true; }); });
+  }
+  root.dataset.gl = 'q' + q;
+}
+let lastPose = '';
 
 function apply(s, now, dt) {
   setFlap(flapFront, s.flapL); setFlap(flapBack, s.flapL);
@@ -769,9 +798,10 @@ function apply(s, now, dt) {
     } else introStart = 0;
   }
   hy += iy; hs += iyaw;
-  const bob = REDUCED ? 0 : Math.sin(now / 1000 * 1.3) * .07 * s.float;
+  const idle = REDUCED || quality >= 2 ? 0 : 1;
+  const bob = Math.sin(now / 1000 * 1.3) * .07 * s.float * idle;
   boxRoot.position.set(s.x, s.y + bob + hy, 0);
-  boxSpin.rotation.set(s.pitch + Math.sin(now / 1000 * .9) * .02 * s.float, s.yaw + hs, s.roll + Math.sin(now / 1000 * 1.1) * .012 * s.float);
+  boxSpin.rotation.set(s.pitch + Math.sin(now / 1000 * .9) * .02 * s.float * idle, s.yaw + hs, s.roll + Math.sin(now / 1000 * 1.1) * .012 * s.float * idle);
   boxSpin.scale.set(s.sx * (1 + sq), s.sy * (1 - sq), s.sz * (1 + sq));
 
   // soft contact shadow follows the box, softer/wider when it floats higher
@@ -800,14 +830,29 @@ function active() {
 }
 function tick(now) {
   if (!active()) { running = false; return; }
-  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  const interval = now - last; last = now;
+  const dt = Math.min(.25, interval / 1000);   // real time, so catch-up never depends on frame rate
   const target = story.t;
   tS = NOSMOOTH ? target : tS + (target - tS) * (1 - Math.exp(-dt * 7));
   if (Math.abs(target - tS) < 1e-4) tS = target;
   const gone = tS > 3.955 && target > 3.955;
-  if (!(gone && lastRenderedGone)) {
+  // at low quality, only draw when something actually changed
+  let need = !(gone && lastRenderedGone);
+  if (need && quality >= 2) {
+    const busy = fx.hop || fx.bump || introStart || items.some((it) => it.hop) ||
+      Math.abs(pointer.tx - pointer.x) > .002 || Math.abs(pointer.ty - pointer.y) > .002;
+    const pose = tS.toFixed(4) + '|' + vw + 'x' + vh;
+    need = busy || pose !== lastPose;
+    lastPose = pose;
+  }
+  if (need) {
     renderOnce(now, dt);
     lastRenderedGone = gone;
+    // frame monitor (skip the first frames after a pause)
+    if (interval < 1000) {
+      perf.ema = perf.ema * .85 + interval * .15;
+      if (++perf.n > 24 && perf.ema > 48 && quality < 2) setQuality(quality + 1);
+    }
   }
   requestAnimationFrame(tick);
 }
@@ -820,6 +865,7 @@ window.addEventListener('scroll', () => wake(false), { passive: true });
 document.addEventListener('visibilitychange', () => wake(false));
 
 resize(true);
+if (softwareGL()) setQuality(2);
 root.classList.add('webgl');
 if (STATIC()) {
   tS = 3.0;
@@ -831,4 +877,4 @@ if (STATIC()) {
   wake(true);
 }
 // test hook for screenshots
-window.__box = { renderer, scene, camera, get t() { return tS; } };
+window.__box = { renderer, scene, camera, get t() { return tS; }, get quality() { return quality; } };

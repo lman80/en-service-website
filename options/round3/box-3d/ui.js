@@ -87,7 +87,8 @@
 
     // Promise words
     if (!staticMode) {
-      var wOn = [L3 > 0.02, L3 > 0.34, L3 > 0.64];
+      var pTop = promise ? promise.getBoundingClientRect().top : 1e9;
+      var wOn = [pTop < vh * 0.3, L3 > 0.34, L3 > 0.64];
       for (var w = 0; w < words.length; w++) words[w].classList.toggle('on', wOn[w]);
       var fast = smooth(0.66, 0.74, L3) * (1 - smooth(0.9, 0.98, L3));
       if (promise) promise.style.setProperty('--fast', fast.toFixed(3));
@@ -107,7 +108,7 @@
 
     // Header colour
     var onDark = false;
-    if (dark > 0.5 && pr && pr.bottom > 40) onDark = true;
+    if (!staticMode && pr && pr.top < 40 && pr.bottom > 40) onDark = true; // layout, not timeline
     if (who) { var wr = who.getBoundingClientRect(); if (wr.top < 40 && wr.bottom > 40) onDark = true; }
     if (footer) { var fr = footer.getBoundingClientRect(); if (fr.top < 40) onDark = true; }
     header.classList.toggle('on-dark', onDark);
