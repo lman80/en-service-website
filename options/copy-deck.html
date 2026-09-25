@@ -1,0 +1,228 @@
+<title>E&amp;N Copy Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@90,600;90,800&family=Public+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root {
+  --paper: #f7f7f4;
+  --card: #ffffff;
+  --ink: #16181b;
+  --ink-2: #5b6068;
+  --rule: #dcdcd6;
+  --mark: #fff06a;
+  --mark-ink: #16181b;
+  --accent: #1f4fd1;
+  --bar: #16181b;
+  --bar-ink: #f7f7f4;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --body: "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #131416; --card: #1b1d20; --ink: #ecece8; --ink-2: #a2a6ad; --rule: #2e3136;
+    --mark: #e8d94a; --mark-ink: #131416; --accent: #7fa2ff; --bar: #ecece8; --bar-ink: #131416;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #131416; --card: #1b1d20; --ink: #ecece8; --ink-2: #a2a6ad; --rule: #2e3136;
+  --mark: #e8d94a; --mark-ink: #131416; --accent: #7fa2ff; --bar: #ecece8; --bar-ink: #131416;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.5 var(--body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 140px; }
+
+header h1 { font: 800 clamp(34px, 6vw, 56px)/1 var(--display); font-stretch: 90%; letter-spacing: -.01em; margin: 0; }
+header p { color: var(--ink-2); max-width: 60ch; margin: 12px 0 0; }
+.voices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; align-items: center; }
+.voices span { font: 500 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin-right: 4px; }
+.voices button { font: 600 14px/1 var(--body); color: var(--ink); background: var(--card); border: 1px solid var(--rule);
+                 border-radius: 999px; padding: 9px 14px; cursor: pointer; }
+.voices button b { font-family: var(--mono); font-weight: 500; margin-right: 6px; color: var(--accent); }
+.voices button:hover { border-color: var(--ink); }
+
+section { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding-block: 28px; border-top: 1px solid var(--rule); }
+section:first-of-type { margin-top: 36px; }
+.el h2 { font: 600 22px/1.15 var(--display); font-stretch: 90%; margin: 0; text-wrap: balance; }
+.el p { font-size: 13px; color: var(--ink-2); margin: 6px 0 0; }
+.el .num { font: 500 12px/1 var(--mono); color: var(--ink-2); display: block; margin-bottom: 8px; }
+
+.opts { display: grid; gap: 6px; }
+.opt { display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: baseline; text-align: left; width: 100%;
+       background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 10px 12px; color: var(--ink);
+       font: inherit; cursor: pointer; }
+.opt:hover { background: var(--card); border-color: var(--rule); }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt .k { font: 500 13px/1.6 var(--mono); color: var(--accent); }
+.opt .t { font-size: 17px; line-height: 1.4; }
+.opt .t small { display: block; font-size: 14px; color: var(--ink-2); margin-top: 2px; }
+.opt .v { font: 500 11px/1.6 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); white-space: nowrap; }
+.opt[aria-pressed="true"] { background: var(--mark); border-color: var(--mark); color: var(--mark-ink); }
+.opt[aria-pressed="true"] .k, .opt[aria-pressed="true"] .v, .opt[aria-pressed="true"] small { color: var(--mark-ink); }
+ol.steps { margin: 0; padding-left: 0; list-style: none; display: inline; }
+ol.steps li { display: inline; }
+ol.steps li + li::before { content: "  →  "; color: var(--ink-2); white-space: pre; }
+.opt[aria-pressed="true"] ol.steps li + li::before { color: var(--mark-ink); }
+
+.bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bar); color: var(--bar-ink);
+       padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); }
+.bar-in { max-width: 980px; margin: 0 auto; display: flex; gap: 14px; align-items: center; }
+#picks { flex: 1; font: 500 13px/1.5 var(--mono); overflow-wrap: anywhere; }
+.bar button { font: 600 14px/1 var(--body); border: 1px solid var(--bar-ink); border-radius: 999px; padding: 10px 16px; cursor: pointer;
+              background: var(--bar-ink); color: var(--bar); white-space: nowrap; }
+.bar button.ghost { background: transparent; color: var(--bar-ink); }
+
+@media (max-width: 720px) {
+  section { grid-template-columns: 1fr; gap: 12px; }
+  .opt { grid-template-columns: 24px 1fr; }
+  .opt .v { grid-column: 2; }
+  .bar-in { flex-wrap: wrap; }
+  #picks { flex-basis: 100%; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>E&amp;N copy deck</h1>
+    <p>Every piece of text a site needs, top to bottom, five ways each. Tap the ones you like; mix freely. Your picks collect in the bar at the bottom — copy them and send them back.</p>
+    <div class="voices" aria-label="Pick a whole voice">
+      <span>Whole voice</span>
+      <button type="button" data-voice="A"><b>A</b>Plain</button>
+      <button type="button" data-voice="B"><b>B</b>Bold</button>
+      <button type="button" data-voice="C"><b>C</b>Personal</button>
+      <button type="button" data-voice="D"><b>D</b>Buyer-speak</button>
+      <button type="button" data-voice="E"><b>E</b>Dry humor</button>
+    </div>
+  </header>
+
+  <main id="deck"></main>
+</div>
+
+<div class="bar" role="region" aria-label="Your picks">
+  <div class="bar-in">
+    <div id="picks">Nothing picked yet.</div>
+    <button type="button" class="ghost" id="clear">Clear</button>
+    <button type="button" id="copy">Copy picks</button>
+  </div>
+</div>
+
+<script>
+const VOICES = { A: "Plain", B: "Bold", C: "Personal", D: "Buyer-speak", E: "Dry humor" };
+const DECK = [
+  { id: "nav", name: "Menu", where: "The links across the top.", opts: {
+    A: "Supplies · How it works · Who we serve · Contact",
+    B: "Supplies · Contact",
+    C: "What we do · About us · Talk to us",
+    D: "Capabilities · Process · Sectors · Request a quote",
+    E: "Stuff · How · Who · Hello" } },
+  { id: "headline", name: "Headline", where: "The biggest words on the page. First thing anyone reads.", opts: {
+    A: "Send us the list. We’ll handle the rest.",
+    B: "Anything. Delivered.",
+    C: "Buying shouldn’t be your whole job.",
+    D: "The exact part, at a delivered price.",
+    E: "We’ll find it." } },
+  { id: "subline", name: "Line under the headline", where: "One sentence that says what E&N does.", opts: {
+    A: "Tools, parts and supplies for agencies, schools and businesses — quoted fast and delivered to your door.",
+    B: "Parts. Tools. Supplies. One quote, one delivery.",
+    C: "Tell us what you need. We’ll find it, price it and get it to you.",
+    D: "Matched to your part number, priced with shipping included, delivered to your site.",
+    E: "You’d be amazed what people can’t find. We find it." } },
+  { id: "button", name: "Main button", where: "The button under the headline, repeated down the page.", opts: {
+    A: "Get a quote", B: "Send your list", C: "Talk to us", D: "Request a quote", E: "Try us" } },
+  { id: "supplies", name: "What we supply", where: "Section heading, with its one line.", opts: {
+    A: ["What we supply", "Tools, parts, equipment, office and facility supplies."],
+    B: ["Everything.", "Tools. Parts. Supplies. Equipment."],
+    C: ["Whatever’s on your list", "From a single fuse to a pallet of paper towels."],
+    D: ["Categories", "MRO, facilities, janitorial, office, safety, tools and equipment."],
+    E: ["Yes, that too.", "If you can buy it, we can buy it for you."] } },
+  { id: "steps", name: "How it works", where: "Three short steps.", steps: true, opts: {
+    A: ["Send your list", "We quote it", "It arrives"],
+    B: ["List", "Quote", "Delivered"],
+    C: ["You tell us what you need", "We find it and give you one price", "It shows up at your door"],
+    D: ["Send the requisition or part numbers", "Get a delivered quote, line by line", "Issue a PO; we ship to your site"],
+    E: ["You send a list", "We do the searching", "You get the stuff"] } },
+  { id: "who", name: "Who we work with", where: "Public and private sector — no state named.", opts: {
+    A: ["Public sector and private business", "Government agencies, schools, facilities and companies of every size."],
+    B: ["Public. Private.", "Everyone who buys things."],
+    C: ["Whoever keeps things running", "Maintenance crews, office managers and purchasing teams."],
+    D: ["Sectors", "Government agencies · Schools and universities · Public facilities · Private companies"],
+    E: ["If you have a purchase order,", "we’d like to see it."] } },
+  { id: "promise", name: "Our promise", where: "The three things E&N always does.", opts: {
+    A: "The exact part — no swaps without asking. Shipping is in the price. Quotes back fast.",
+    B: "Exact. Delivered. Fast.",
+    C: "We never send a substitute without asking. The price you see is the price you pay. You always reach a person.",
+    D: "Line-by-line match to brand and part number · Delivered pricing, freight included · Substitutions flagged, never assumed",
+    E: "No surprise substitutes. No surprise shipping. No surprise invoices." } },
+  { id: "about", name: "About us", where: "One or two sentences about the company.", opts: {
+    A: "E&N Service Company is a procurement company. We source and deliver the supplies organizations need, so their people can get on with the job.",
+    B: "Small company. Big catalog.",
+    C: "We’re a small team that takes every order personally. Call us and you’ll talk to the people doing the work.",
+    D: "E&N Service Company sources tools, parts and supplies for public-sector and commercial buyers, quoting delivered prices matched to the specification.",
+    E: "We like finding things. Turns out that’s a business." } },
+  { id: "contact", name: "Contact section", where: "Heading and line above the email and phone.", opts: {
+    A: ["Get a quote", "Email your list or call. We’ll get back to you with a price."],
+    B: ["Need something?", "Send the list."],
+    C: ["Let’s talk", "Call or email. A real person answers."],
+    D: ["Request a quote", "Email part numbers, quantities and ship-to address."],
+    E: ["What are you looking for?", "Go on. Try us."] } },
+  { id: "footer", name: "Footer line", where: "The small line at the very bottom.", opts: {
+    A: "E&N Service Company — procurement for the public and private sector.",
+    B: "E&N. Delivered.",
+    C: "Thanks for stopping by.",
+    D: "E&N Service Company · Procurement · enservicecompany@gmail.com · 262-206-2108",
+    E: "Still can’t find it? Call us." } }
+];
+
+const KEY = "en-copy-picks";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { picks = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(picks)); } catch (e) {} };
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+function body(el, v) {
+  if (el.steps) return '<ol class="steps">' + v.map(s => "<li>" + esc(s) + "</li>").join("") + "</ol>";
+  if (Array.isArray(v)) return esc(v[0]) + "<small>" + esc(v[1]) + "</small>";
+  return esc(v);
+}
+
+const deck = document.getElementById("deck");
+deck.innerHTML = DECK.map((el, i) => `
+  <section id="${el.id}">
+    <div class="el"><span class="num">${String(i + 1).padStart(2, "0")} / ${DECK.length}</span><h2>${esc(el.name)}</h2><p>${esc(el.where)}</p></div>
+    <div class="opts" role="group" aria-label="${esc(el.name)}">
+      ${Object.entries(el.opts).map(([k, v]) => `
+        <button type="button" class="opt" id="opt-${el.id}-${k}" data-el="${el.id}" data-k="${k}" aria-pressed="false">
+          <span class="k">${k}</span><span class="t">${body(el, v)}</span><span class="v">${VOICES[k]}</span>
+        </button>`).join("")}
+    </div>
+  </section>`).join("");
+
+function render() {
+  document.querySelectorAll(".opt").forEach(b => b.setAttribute("aria-pressed", String(picks[b.dataset.el] === b.dataset.k)));
+  const got = DECK.filter(el => picks[el.id]).map(el => el.name + " " + picks[el.id]);
+  document.getElementById("picks").textContent = got.length ? got.join(" · ") : "Nothing picked yet.";
+}
+deck.addEventListener("click", e => {
+  const b = e.target.closest(".opt"); if (!b) return;
+  const { el, k } = b.dataset;
+  picks[el] = picks[el] === k ? undefined : k;
+  if (!picks[el]) delete picks[el];
+  save(); render();
+});
+document.querySelectorAll("[data-voice]").forEach(b => b.addEventListener("click", () => {
+  DECK.forEach(el => picks[el.id] = b.dataset.voice); save(); render();
+}));
+document.getElementById("clear").addEventListener("click", () => { picks = {}; save(); render(); });
+document.getElementById("copy").addEventListener("click", e => {
+  const text = document.getElementById("picks").textContent;
+  const btn = e.currentTarget;
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy picks", 1600); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("picks"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected — copy it"; };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (err) { fallback(); }
+});
+render();
+</script>
